@@ -21,7 +21,7 @@ export default function Chatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const ai = new GoogleGenerativeAI({ apikey: 'AIzaSyBUl13obxiHKv1Cq1X1S61IM_G7sDT_nFU' });
 
   useEffect(() => {
     if (scrollRef.current) {
