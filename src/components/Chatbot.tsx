@@ -21,7 +21,14 @@ export default function Chatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const aiRef = useRef<GoogleGenAI | null>(null);
+
+  useEffect(() => {
+    const key = process.env.GEMINI_API_KEY;
+    if (key && key !== 'undefined' && key !== 'MY_GEMINI_API_KEY') {
+      aiRef.current = new GoogleGenAI({ apiKey: key });
+    }
+  }, []);
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -31,6 +38,13 @@ export default function Chatbot() {
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return;
+    
+    if (!aiRef.current) {
+      const errorMsg = { role: 'model', text: 'I apologize, but the AI assistant is currently unavailable (API key not configured). Please contact us directly at +254 720 342 039 for assistance.' } as Message;
+      setMessages(prev => [...prev, { role: 'user', text } as Message, errorMsg]);
+      setInputText('');
+      return;
+    }
 
     const newMessages = [...messages, { role: 'user', text } as Message];
     setMessages(newMessages);
@@ -38,7 +52,7 @@ export default function Chatbot() {
     setIsTyping(true);
 
     try {
-      const response = await ai.models.generateContent({
+      const response = await aiRef.current!.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: [
           ...newMessages.map(m => ({
@@ -185,21 +199,28 @@ function VoiceAssistant({ onClose }: { onClose: () => void }) {
   const audioContextRef = useRef<AudioContext | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const sessionRef = useRef<any>(null);
-
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const aiRef = useRef<GoogleGenAI | null>(null);
 
   useEffect(() => {
-    startSession();
+    const key = process.env.GEMINI_API_KEY;
+    if (key && key !== 'undefined' && key !== 'MY_GEMINI_API_KEY') {
+      aiRef.current = new GoogleGenAI({ apiKey: key });
+      startSession();
+    } else {
+      alert("AI Assistant is currently unavailable (API key not configured). Please contact us directly at +254 720 342 039.");
+      onClose();
+    }
     return () => {
       stopSession();
     };
   }, []);
 
   const startSession = async () => {
+    if (!aiRef.current) return;
     try {
       setStatus('listening');
       
-      const session = await ai.live.connect({
+      const session = await aiRef.current.live.connect({
         model: "gemini-3.1-flash-live-preview",
         config: {
           responseModalities: [Modality.AUDIO],
