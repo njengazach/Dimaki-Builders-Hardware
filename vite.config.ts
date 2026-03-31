@@ -5,7 +5,6 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
 
-  // Must match your repo name exactly
   base: '/Dimaki-Builders-Hardware/',
 
   resolve: {
@@ -13,4 +12,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+
+  define: {
+    // Hard-code the key directly into the build (works for static hosting)
+    'import.meta.env.VITE_GEMINI_API_KEY': JSON.stringify('AIzaSyBUl13obxiHKv1Cq1X1S61IM_G7sDT_nFU')
+  }
 })
