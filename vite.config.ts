@@ -4,7 +4,9 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Dimaki-Builders-Hardware/',     // Important for GitHub Pages
+  
+  // This is the key fix for GitHub Pages
+  base: '/Dimaki-Builders-Hardware/',
 
   resolve: {
     alias: {
