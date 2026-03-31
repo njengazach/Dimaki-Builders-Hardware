@@ -1,5 +1,5 @@
 {
   "name": "Dimaki Builders Hardware",
   "description": "Premium builders hardware and construction supplies in Kenya, featuring an AI-powered voice assistant.",
-  "requestFramePermissions": ["microphone"]
+  "requestFramePermissions": ["camera", "microphone", "geolocation"]
 }
