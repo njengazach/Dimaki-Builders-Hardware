@@ -3,7 +3,7 @@ import { MessageSquare, X, Send, Mic, MicOff, Volume2, VolumeX } from 'lucide-re
 import { motion, AnimatePresence } from 'motion/react';
 import { GoogleGenAI, Modality } from "@google/genai";
 import ReactMarkdown from 'react-markdown';
-import { cn } from '@/lib/utils';
+import { cn } from '@/src/lib/utils';
 
 // Types for Chat
 interface Message {
@@ -21,12 +21,7 @@ export default function Chatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-   // Hardcoded Gemini API key for GitHub Pages deployment
-  const ai = new GoogleGenerativeAI({
-    apikey: 'AIzaSyBUl13obxiHKv1Cq1X1S61IM_G7sDT_nFU'
-  });
-
-  console.log("Gemini AI initialized with key:", !!'AIzaSyBUl13obxiHKv1Cq1X1S61IM_G7sDT_nFU');
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
   useEffect(() => {
     if (scrollRef.current) {
