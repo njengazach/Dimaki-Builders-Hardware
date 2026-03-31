@@ -21,9 +21,9 @@ export default function Chatbot() {
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  / Hardcoded API key for deployment
-  const ai = new GoogleGenerativeAI({ 
-    apikey: 'AIzaSyBUl13obxiHKv1Cq1X1S61IM_G7sDT_nFU' 
+   // Hardcoded Gemini API key for GitHub Pages deployment
+  const ai = new GoogleGenerativeAI({
+    apikey: 'AIzaSyBUl13obxiHKv1Cq1X1S61IM_G7sDT_nFU'
   });
 
   console.log("Gemini AI initialized with key:", !!'AIzaSyBUl13obxiHKv1Cq1X1S61IM_G7sDT_nFU');
