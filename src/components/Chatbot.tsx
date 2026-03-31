@@ -41,10 +41,6 @@ export default function Chatbot() {
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: [
-          {
-            role: 'user',
-            parts: [{ text: "Context: Use the pricing and inventory information from this live sheet to answer customer queries: https://docs.google.com/spreadsheets/d/1k7hKZLOuf93LCeaEaUg6SAX1I7scYn47BxKrgajFabM/edit?usp=sharing" }]
-          },
           ...newMessages.map(m => ({
             role: m.role as any,
             parts: [{ text: m.text }]
@@ -52,7 +48,17 @@ export default function Chatbot() {
         ],
         config: {
           tools: [{ urlContext: {} }],
-          systemInstruction: "You are a helpful assistant for Dimaki Builders Hardware, located in Elburgon Town, Kenya (Besides Molo Line Office). You provide information about construction materials, tools, plumbing, electrical supplies, and general hardware. Use the provided Google Sheet URL context to answer questions about specific product prices and availability accurately. If a price is not in the sheet, provide a general range based on your knowledge of the Kenyan market and ask them to contact the store at +254 720 342 039 for the most current quote. Be professional, friendly, and knowledgeable.",
+          systemInstruction: `You are a helpful assistant for Dimaki Builders Hardware in Elburgon Town, Kenya.
+          
+          CRITICAL: You MUST use the urlContext tool to read our live price list from this URL for every pricing query:
+          https://docs.google.com/spreadsheets/d/1k7hKZLOuf93LCeaEaUg6SAX1I7scYn47BxKrgajFabM/edit?usp=sharing
+          
+          When a customer asks for a price:
+          1. Use the urlContext tool to fetch the latest data from the sheet.
+          2. Provide the specific price found in the sheet.
+          3. If the item is not in the sheet, provide a general estimate for the Kenyan market and refer them to +254 720 342 039.
+          
+          Be professional, friendly, and use Kenyan construction terminology.`,
         }
       });
 
@@ -192,11 +198,18 @@ function VoiceAssistant({ onClose }: { onClose: () => void }) {
   const startSession = async () => {
     try {
       setStatus('listening');
+      
       const session = await ai.live.connect({
         model: "gemini-3.1-flash-live-preview",
         config: {
           responseModalities: [Modality.AUDIO],
-          systemInstruction: "You are the voice assistant for Dimaki Builders Hardware, located in Elburgon Town, Kenya. Keep your responses concise and helpful. You are speaking to a customer in Kenya. If they ask about products, mention we have cement, steel, tools, and more. Our contact is +254 720 342 039.",
+          systemInstruction: `You are the voice assistant for Dimaki Builders Hardware in Elburgon, Kenya. 
+          
+          You MUST use the urlContext tool to read our live price list from this URL for every pricing query:
+          https://docs.google.com/spreadsheets/d/1k7hKZLOuf93LCeaEaUg6SAX1I7scYn47BxKrgajFabM/edit?usp=sharing
+          
+          When customers ask about prices, check the sheet first. If not available, give a helpful estimate and refer them to +254 720 342 039. Keep responses concise and friendly.`,
+          tools: [{ urlContext: {} }],
           speechConfig: {
             voiceConfig: { prebuiltVoiceConfig: { voiceName: 'Zephyr' } }
           }
