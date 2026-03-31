@@ -40,12 +40,19 @@ export default function Chatbot() {
     try {
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
-        contents: newMessages.map(m => ({
-          role: m.role,
-          parts: [{ text: m.text }]
-        })),
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: "Context: Use the pricing and inventory information from this live sheet to answer customer queries: https://docs.google.com/spreadsheets/d/1k7hKZLOuf93LCeaEaUg6SAX1I7scYn47BxKrgajFabM/edit?usp=sharing" }]
+          },
+          ...newMessages.map(m => ({
+            role: m.role as any,
+            parts: [{ text: m.text }]
+          }))
+        ],
         config: {
-          systemInstruction: "You are a helpful assistant for Dimaki Builders Hardware, located in Elburgon Town, Kenya (Besides Molo Line Office). You provide information about construction materials, tools, plumbing, electrical supplies, and general hardware. Be professional, friendly, and knowledgeable about the Kenyan construction market. Contact us at +254 720 342 039 or kibedavi@gmail.com.",
+          tools: [{ urlContext: {} }],
+          systemInstruction: "You are a helpful assistant for Dimaki Builders Hardware, located in Elburgon Town, Kenya (Besides Molo Line Office). You provide information about construction materials, tools, plumbing, electrical supplies, and general hardware. Use the provided Google Sheet URL context to answer questions about specific product prices and availability accurately. If a price is not in the sheet, provide a general range based on your knowledge of the Kenyan market and ask them to contact the store at +254 720 342 039 for the most current quote. Be professional, friendly, and knowledgeable.",
         }
       });
 
