@@ -4,8 +4,8 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  
-  // This is the key fix for GitHub Pages
+
+  // Must match your repo name exactly
   base: '/Dimaki-Builders-Hardware/',
 
   resolve: {
