@@ -11,7 +11,8 @@ import {
   CheckCircle2,
   Menu,
   ShoppingBag,
-  Star
+  Star,
+  ExternalLink
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Chatbot from './components/Chatbot';
@@ -36,6 +37,14 @@ export default function App() {
             <a href="#services" className="hover:text-brand-orange transition-colors">Services</a>
             <a href="#about" className="hover:text-brand-orange transition-colors">About</a>
             <a href="#contact" className="hover:text-brand-orange transition-colors">Contact</a>
+            <a 
+              href="https://docs.google.com/spreadsheets/d/1k7hKZLOuf93LCeaEaUg6SAX1I7scYn47BxKrgajFabM/edit?usp=sharing" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-brand-orange hover:underline flex items-center gap-1"
+            >
+              Price List <ExternalLink size={14} />
+            </a>
           </div>
 
           <div className="flex items-center gap-4">
@@ -74,9 +83,14 @@ export default function App() {
                   <button className="px-8 py-4 bg-brand-navy text-white rounded-full font-bold flex items-center justify-center gap-2 hover:bg-brand-orange transition-all duration-300 shadow-lg shadow-brand-navy/10 cursor-pointer">
                     Explore Inventory <ArrowRight size={20} />
                   </button>
-                  <button className="px-8 py-4 bg-white border-2 border-slate-200 text-brand-navy rounded-full font-bold hover:border-brand-navy transition-all duration-300 cursor-pointer">
-                    Our Locations
-                  </button>
+                  <a 
+                    href="https://docs.google.com/spreadsheets/d/1k7hKZLOuf93LCeaEaUg6SAX1I7scYn47BxKrgajFabM/edit?usp=sharing" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="px-8 py-4 bg-white border-2 border-slate-200 text-brand-navy rounded-full font-bold hover:border-brand-navy transition-all duration-300 flex items-center justify-center gap-2"
+                  >
+                    View Price Sheet <ExternalLink size={20} />
+                  </a>
                 </div>
                 
                 <div className="mt-12 flex items-center gap-8">
