@@ -3,7 +3,7 @@ import { MessageSquare, X, Send, Mic, MicOff, Volume2, VolumeX } from 'lucide-re
 import { motion, AnimatePresence } from 'motion/react';
 import { GoogleGenAI, Modality } from "@google/genai";
 import ReactMarkdown from 'react-markdown';
-import { cn } from '@/lib/utils';
+import { cn } from '@/src/lib/utils';
 
 // Types for Chat
 interface Message {
